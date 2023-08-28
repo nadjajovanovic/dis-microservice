@@ -14,7 +14,7 @@ import projekat.external.response.TransactionResponse;
 public interface TransactionService {
 
     @PostMapping
-    ResponseEntity<TransactionRequest> addTransaction(TransactionRequest transactionRequest);
+    ResponseEntity<Void> addTransaction(TransactionRequest transactionRequest);
 
     default ResponseEntity<TransactionResponse> fallback(Exception e) {
         throw new ShipmentCustomException("Transaction service is not available", HttpStatus.SERVICE_UNAVAILABLE);
