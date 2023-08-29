@@ -1,0 +1,21 @@
+server:
+  port: 8889
+
+spring:
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+      routes:
+        - id : CARGO-SERVICE
+          uri: lb://CARGO-SERVICE
+          predicates:
+            - Path=/cargo/**
+        - id: TRANSACTION-SERVICE
+          uri: lb://TRANSACTION-SERVICE
+          predicates:
+            - Path=/transaction/**
+        - id: SHIPMENT-SERVICE
+          uri: lb://SHIPMENT-SERVICE
+          predicates:
+            - Path=/shipment/**

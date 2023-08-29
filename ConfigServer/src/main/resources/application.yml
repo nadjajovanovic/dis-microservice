@@ -9,10 +9,3 @@ spring:
       server:
         git:
           uri: https://github.com/nadjajovanovic/cloud-config
-
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    fetch-registry: true
-    register-with-eureka: true

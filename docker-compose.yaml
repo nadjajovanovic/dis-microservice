@@ -1,0 +1,20 @@
+version: '3'
+services:
+  serviceregistry:
+    image: 'serviceregistry:1.0'
+    ports:
+      - '8761:8761'
+  configserver:
+    image: 'configserver:1.0'
+    ports:
+      - '8888:8888'
+    environment:
+      - EUREKA_SERVER_ADDRESS=http://serviceregistry:8761/eureka
+    depends_on:
+      - serviceregistry
+  apigateway:
+    image: 'apigateway:1.0'
+    ports:
+      - '8889:8889'
+    depends_on:
+      - serviceregistry
