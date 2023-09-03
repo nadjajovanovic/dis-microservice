@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class ShipmentRequest {
-
     private int cargoId;
     private int numberOfParts;
     private String shipmentStatus;

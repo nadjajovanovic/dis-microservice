@@ -4,7 +4,8 @@ import lombok.Data;
 import org.springframework.http.HttpStatus;
 
 @Data
-public class ShipmentCustomException extends RuntimeException{
+public class ShipmentCustomException extends RuntimeException {
+
     private HttpStatus code;
 
     public ShipmentCustomException(String message, HttpStatus code){

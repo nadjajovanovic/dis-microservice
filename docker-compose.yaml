@@ -1,20 +1,97 @@
 version: '3'
 services:
   serviceregistry:
-    image: 'serviceregistry:1.0'
+    image: 'nadja97/serviceregistry:1.0'
+    networks:
+      - my-network
     ports:
       - '8761:8761'
+  postgrescargo:
+    image: 'postgres:latest'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: nadja
+      POSTGRES_DB: cargoDB
+      #ports:
+    #- "5432:5432"
+    volumes:
+      - cargo-data:/var/lib/postgresql/data
+  postgrestransaction:
+    image: 'postgres:latest'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: nadja
+      POSTGRES_DB: transactionDB
+        #ports:
+      #- "5432:5432"
+    volumes:
+      - transaction-data:/var/lib/postgresql/data
+  postgresshipment:
+    image: 'postgres:latest'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: nadja
+      POSTGRES_DB: shipmentDB
+        #ports:
+      #- "5432:5432"
+    volumes:
+      - shipment-data:/var/lib/postgresql/data
   configserver:
-    image: 'configserver:1.0'
+    image: 'nadja97/configserver:1.0'
+    networks:
+      - my-network
     ports:
       - '8888:8888'
-    environment:
-      - EUREKA_SERVER_ADDRESS=http://serviceregistry:8761/eureka
+      #environment:
+      #- EUREKA_SERVER_ADDRESS=http://serviceregistry:8761/eureka
     depends_on:
       - serviceregistry
   apigateway:
-    image: 'apigateway:1.0'
+    image: 'nadja97/apigateway:1.0'
+    networks:
+      - my-network
     ports:
       - '8889:8889'
+        #environment:
+      #- EUREKA_SERVER_ADDRESS=http://serviceregistry:8761/eureka
     depends_on:
       - serviceregistry
+  cargoservice:
+    image: 'nadja97/cargoservice:1.0'
+    ports:
+      - '8081:8081'
+    depends_on:
+      - postgrescargo
+      - serviceregistry
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/cargoDB
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: nadja
+  transactionservice:
+    image: 'nadja97/transactionservice:1.0'
+    ports:
+      - '8083:8083'
+    depends_on:
+      - postgrestransaction
+      - serviceregistry
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/transactionDB
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: nadja
+  shipmentservice:
+    image: 'nadja97/shipmentservice:1.0'
+    ports:
+      - '8082:8082'
+    depends_on:
+      - postgresshipment
+      - serviceregistry
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/shipmentDB
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: nadja
+volumes:
+  cargo-data:
+  transaction-data:
+  shipment-data:
+networks:
+  my-network:

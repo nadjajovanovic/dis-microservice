@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CargoResponse {
+
     private int cargoId;
     private String mimeType;
     private String packing;

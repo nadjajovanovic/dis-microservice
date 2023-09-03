@@ -19,3 +19,10 @@ spring:
           uri: lb://SHIPMENT-SERVICE
           predicates:
             - Path=/shipment/**
+eureka:
+  instance:
+    hostname: localhost
+  client:
+  service-url:
+    #defaultZone: ${EUREKA_SERVER_ADDRESS:http://localhost:8761/eureka}
+    defaultZone: http://${eureka.instance.hostname}:8761/eureka/

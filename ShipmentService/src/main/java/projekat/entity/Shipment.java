@@ -13,6 +13,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Shipment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int shipmentId;
